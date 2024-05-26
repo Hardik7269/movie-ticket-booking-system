@@ -25,14 +25,15 @@ public class Ticket {
     private int ticketId;
     
     private LocalDateTime purchDateTime;
-    
+
     @ManyToOne
+    @JsonBackReference
     @JoinColumn
     private Show show;
     
     @ManyToOne
+    @JsonBackReference
     @JoinColumn
     private User user;
-    
     
 }

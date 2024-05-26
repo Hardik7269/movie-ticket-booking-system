@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShowSeats {
+public class ShowSeat {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

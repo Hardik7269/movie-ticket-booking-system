@@ -34,16 +34,20 @@ public class Show {
     private Date date;
     
     @ManyToOne
+    @JsonBackReference
     @JoinColumn
     private Movie movie;
     
     @ManyToOne
+    @JsonBackReference
     @JoinColumn
     private Theater theater;
     
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
-    private List<ShowSeats> showSeats = new ArrayList<>();
+    @JsonManagedReference
+    private List<ShowSeat> showSeats = new ArrayList<>();
     
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Ticket> ticketList = new ArrayList<>();
 }

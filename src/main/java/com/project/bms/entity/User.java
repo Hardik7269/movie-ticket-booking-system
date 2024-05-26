@@ -1,7 +1,8 @@
 package com.project.bms.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,11 +18,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name="users")
 public class User {
 	
 	@Id
-	private long uId;
+	private Long uId;
 	private String uname;
 	private int age;
 	
@@ -28,5 +31,6 @@ public class User {
 	private String gender;
 	
 	@OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Ticket> tikcets = new ArrayList<>();
 }
