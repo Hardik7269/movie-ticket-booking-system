@@ -2,6 +2,7 @@ package com.project.bms.controllers;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,15 +25,22 @@ public class UserController {
 
 	@PostMapping("/addUser")
 	public ResponseEntity<String> registerUser(@RequestBody UserDto user) {
-
-		String response = userService.addUser(user);
-
-		return ResponseEntity.status(201).body(response);
+		try {
+			String response = userService.addUser(user);
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 
 	@GetMapping("/showTickets/{userId}")
 	public ResponseEntity<List<TicketDto>> getUsersTickets(@PathVariable long userId) {
-		List<TicketDto> ticketList = userService.getAllTickets(userId);
-		return ResponseEntity.ok(ticketList);
+		try {
+			List<TicketDto> ticketList = userService.getAllTickets(userId);
+			return ResponseEntity.ok(ticketList);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
 	}
 }

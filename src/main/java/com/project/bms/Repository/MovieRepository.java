@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.project.bms.entity.Movie;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long>{
+public interface MovieRepository extends JpaRepository<Movie, Integer>{
 	public Optional<Movie> findByMovieName(String name);
 }

@@ -1,5 +1,6 @@
 package com.project.bms.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +20,12 @@ public class TicketController {
 	
 	@PostMapping("/bookTicket")
 	public ResponseEntity<String> bookTicket(@RequestBody TicketReciveDto ticketInfo){
-		ticketService.bookTicket(ticketInfo);
-		return ResponseEntity.ok("Ticket Booked !!");
+		try {
+			ticketService.bookTicket(ticketInfo);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Ticket Booked !!");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+		}
 	}
 	
 }
