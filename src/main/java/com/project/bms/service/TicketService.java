@@ -73,7 +73,6 @@ public class TicketService {
         List<ShowSeat> showSeats = show.getShowSeats();
 
         for (ShowSeat seat : selectedSeats) {
-        	
             Predicate<? super ShowSeat> predicate = s -> s.getSeatNo().equals(seat.getSeatNo()) && s.isAvailable();
 			ShowSeat availableSeat = showSeats.stream()
                     .filter(predicate)
@@ -82,15 +81,19 @@ public class TicketService {
 
             availableSeat.setAvailable(false);
         }
-
-        showRepository.save(show);
+        
+        theater.addTheaterShow(show);
+        movie.addMovieShows(show);
 
         Ticket bookedTicket = Ticket.builder()
                 .purchDateTime(LocalDateTime.now())
                 .show(show)
                 .user(user)
                 .build();
-
-        ticketRepository.save(bookedTicket);
+        
+        show.addShowTicket(bookedTicket);
+        user.addUserTicket(bookedTicket);
+        
+        showRepository.save(show);
     }
 }

@@ -33,4 +33,14 @@ public class User {
 	@OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
 	@JsonManagedReference("user-tickets")
 	private List<Ticket> tikcets = new ArrayList<>();
+	
+	//syncronize the user with tickets
+	public void addUserTicket(Ticket ticket) {
+		tikcets.add(ticket);
+		ticket.setUser(this);
+	}
+	public void removeUserTicket(Ticket ticket) {
+		tikcets.add(ticket);
+		ticket.setUser(this);
+	}
 }

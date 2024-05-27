@@ -38,4 +38,15 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @JsonManagedReference("movie-shows")
     private List<Show> shows = new ArrayList<>();
+    
+    //Synchronization Shows with moive
+    public void addMovieShows(Show show) {
+    	shows.add(show);
+    	show.setMovie(this);
+    }
+    
+    public void removeMovieShows(Show show) {
+    	shows.remove(show);
+    	show.setMovie(null);
+    }
 }

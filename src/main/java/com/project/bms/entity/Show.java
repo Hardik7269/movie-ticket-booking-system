@@ -53,4 +53,25 @@ public class Show {
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
     @JsonManagedReference("show-tickets")
     private List<Ticket> ticketList = new ArrayList<>();
+    
+    //synchronization Ticket
+    public void addShowTicket(Ticket ticket) {
+    	ticketList.add(ticket);
+    	ticket.setShow(this);
+    }
+    public void removeShowTicket(Ticket ticket) {
+    	ticketList.remove(ticket);
+    	ticket.setShow(null);
+    }
+    
+    //synchronization Show Seat
+    public void addShowSeat(ShowSeat showSeat) {
+    	showSeats.add(showSeat);
+    	showSeat.setShow(this);
+    }
+    public void removeShowSeat(ShowSeat showSeat) {
+    	showSeats.remove(showSeat);
+    	showSeat.setShow(null);
+    }
+    
 }
