@@ -1,6 +1,11 @@
 package com.project.bms.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +17,7 @@ import com.project.bms.entity.Movie;
 import com.project.bms.entity.Show;
 import com.project.bms.entity.Theater;
 import com.project.bms.exceptations.MovieNotFoundExceptation;
+import com.project.bms.exceptations.ShowNotFoundExceptation;
 import com.project.bms.exceptations.TheaterNotFoundExceptation;
 
 import jakarta.transaction.Transactional;
@@ -57,5 +63,16 @@ public class ShowService {
 		showRepository.save(newShow);
 		movieRepository.save(movie);
 		theaterRepository.save(theater);
+	}
+	
+	public List<Show> getTodayShow() throws ShowNotFoundExceptation{
+		LocalDate today = LocalDate.now();
+		Predicate<? super Show> predicate = show -> show.getDate().toLocalDate().equals(today);
+		List<Show> todayShow = showRepository.findAll().stream().filter(predicate).collect(Collectors.toList());
+		if(todayShow.isEmpty()) {
+			throw new ShowNotFoundExceptation();
+		}
+		
+		return todayShow;
 	}
 }
