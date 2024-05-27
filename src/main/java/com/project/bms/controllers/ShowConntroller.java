@@ -33,9 +33,9 @@ public class ShowConntroller {
 	}
 	
 	@GetMapping("/showToday")
-	public ResponseEntity<List<Show>> showTodayShows(){
+	public ResponseEntity<List<ShowDto>> showTodayShows(){
 		try {
-			List<Show> shows = showService.getTodayShow();
+			List<ShowDto> shows = showService.getTodayShow();
 			return ResponseEntity.ok(shows);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

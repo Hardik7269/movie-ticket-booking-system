@@ -1,6 +1,5 @@
 package com.project.bms.service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +18,7 @@ import com.project.bms.entity.Theater;
 import com.project.bms.exceptations.MovieNotFoundExceptation;
 import com.project.bms.exceptations.ShowNotFoundExceptation;
 import com.project.bms.exceptations.TheaterNotFoundExceptation;
+import com.project.bms.transformDtoTo.TransformDto;
 
 import jakarta.transaction.Transactional;
 
@@ -28,13 +28,15 @@ public class ShowService {
 	protected ShowRepository showRepository;
 	protected TheaterRepository theaterRepository;
 	protected MovieRepository movieRepository;
+	protected TransformDto transform;
 	
 	public ShowService(ShowRepository showRepository, TheaterRepository theaterRepository,
-			MovieRepository movieRepository) {
+			MovieRepository movieRepository , TransformDto transform) {
 		super();
 		this.showRepository = showRepository;
 		this.theaterRepository = theaterRepository;
 		this.movieRepository = movieRepository;
+		this.transform = transform;
 	}
 
 
@@ -52,11 +54,8 @@ public class ShowService {
 		Movie movie = movieOp.get();
 		Theater theater = theaterOp.get();
 		
-		Show newShow = Show.builder().date(showDto.getShowDate())
-						.time(showDto.getShowTime())
-						.movie(movie)
-						.theater(theater)
-						.build();
+		Show newShow = transform.showDtoToShow(showDto , theater , movie);
+				
 		movie.addMovieShows(newShow);
 		theater.addTheaterShow(newShow);
 		
@@ -64,15 +63,18 @@ public class ShowService {
 		movieRepository.save(movie);
 		theaterRepository.save(theater);
 	}
-	
-	public List<Show> getTodayShow() throws ShowNotFoundExceptation{
+
+	public List<ShowDto> getTodayShow() throws ShowNotFoundExceptation {
 		LocalDate today = LocalDate.now();
-		Predicate<? super Show> predicate = show -> show.getDate().toLocalDate().equals(today);
-		List<Show> todayShow = showRepository.findAll().stream().filter(predicate).collect(Collectors.toList());
-		if(todayShow.isEmpty()) {
+		Predicate<Show> predicate = show -> show.getDate().toLocalDate().equals(today);
+
+		List<ShowDto> todayShows = showRepository.findAll().stream().filter(predicate)
+				.map(show -> transform.showToShowDto(show)).collect(Collectors.toList());
+
+		if (todayShows.isEmpty()) {
 			throw new ShowNotFoundExceptation();
 		}
-		
-		return todayShow;
+
+		return todayShows;
 	}
 }
