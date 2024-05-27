@@ -18,16 +18,16 @@ public class Theater {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     private String name;
 
     @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("theater-seats")
     private List<TheaterSeat> theaterSeatList = new ArrayList<>();
 
     @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("theater-shows")
     private List<Show> showList = new ArrayList<>();
     
 }

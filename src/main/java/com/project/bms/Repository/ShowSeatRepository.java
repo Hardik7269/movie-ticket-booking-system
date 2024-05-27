@@ -7,5 +7,5 @@ import com.project.bms.entity.ShowSeat;
 
 @Repository
 public interface ShowSeatRepository extends JpaRepository<ShowSeat, Integer>{
-
+	public ShowSeat findBySeatNo(String seatNumber);
 }

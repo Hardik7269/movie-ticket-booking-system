@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,21 +19,22 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ticketId;
+    private Integer ticketId;
     
     private LocalDateTime purchDateTime;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("show-tickets")
     @JoinColumn
     private Show show;
     
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("user-tickets")
     @JoinColumn
     private User user;
     

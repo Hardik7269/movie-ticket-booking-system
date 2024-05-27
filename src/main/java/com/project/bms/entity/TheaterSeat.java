@@ -15,11 +15,11 @@ public class TheaterSeat {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     private String seatNo;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("theater-seats")
     private Theater theater;
 }

@@ -1,5 +1,7 @@
 package com.project.bms.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +20,7 @@ public class ShowSeat {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     private String seatNo;
     
@@ -26,6 +28,7 @@ public class ShowSeat {
     private boolean isAvailable;
     
     @ManyToOne
-    @JoinColumn
+    @JsonBackReference("show-seats")
+    @JoinColumn(name = "show_number")
     private Show show;
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,30 +26,31 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Show {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int showId;
-    
+    private Integer id;
+   
     private Time time;
     private Date date;
     
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("movie-shows")
     @JoinColumn
     private Movie movie;
     
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("theater-shows")
     @JoinColumn
     private Theater theater;
     
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("show-seats")
     private List<ShowSeat> showSeats = new ArrayList<>();
     
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("show-tickets")
     private List<Ticket> ticketList = new ArrayList<>();
 }

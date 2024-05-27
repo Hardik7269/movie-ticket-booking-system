@@ -26,7 +26,7 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movieId;
+    private Integer id;
     
     private String movieName;
     
@@ -36,6 +36,6 @@ public class Movie {
     private String language;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("movie-shows")
     private List<Show> shows = new ArrayList<>();
 }
