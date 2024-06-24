@@ -5,6 +5,8 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.project.bms.entity.Weather;
+
 import lombok.Builder;
 import lombok.Data;
 

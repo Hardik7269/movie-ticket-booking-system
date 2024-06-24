@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.bms.dtos.TicketDto;
+import com.project.bms.dtos.TicketResponseDTO;
 import com.project.bms.dtos.UserDto;
 import com.project.bms.service.UserService;
 
@@ -34,9 +35,9 @@ public class UserController {
 	}
 
 	@GetMapping("/showTickets/{userId}")
-	public ResponseEntity<List<TicketDto>> getUsersTickets(@PathVariable long userId) {
+	public ResponseEntity<TicketResponseDTO> getUsersTickets(@PathVariable long userId) {
 		try {
-			List<TicketDto> ticketList = userService.getAllTickets(userId);
+			TicketResponseDTO ticketList = userService.getAllTickets(userId);
 			return ResponseEntity.ok(ticketList);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
