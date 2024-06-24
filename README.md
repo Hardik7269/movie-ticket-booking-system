@@ -5,7 +5,9 @@ Welcome to the Movie Ticket Booking System! This repository contains the back-en
 ## Technologies Used 🛠️
 
 - **Spring Boot**: For building the back-end application.
+- **Sonar Qube** : Code Quality Assurance Tool.
 - **REST API**: To expose endpoints for various functionalities.
+- **REST TEMPLATE** : To integrate External Weather API.
 - **PostgreSQL**: As the relational database management system.
 - **Maven**: For project management and dependency management.
 - **Spring Security**: Securing all the endpoints with basic authentication.
