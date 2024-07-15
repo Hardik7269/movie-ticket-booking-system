@@ -50,6 +50,9 @@ To get started with setting up the project, follow these steps:
      - **Username**: `admin`
      - **Password**: `admin`
 
+## License
+[MIT License](LICENSE)
+
 ## Contribution 🤝
 
 We welcome contributions to improve and enhance the system. Whether it's fixing bugs or adding new features, your efforts are appreciated! 🎉
