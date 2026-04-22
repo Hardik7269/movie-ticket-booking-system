@@ -23,21 +23,14 @@ public class MovieController {
 
 	@PostMapping("/addMovie")
 	public ResponseEntity<String> addMovie(@RequestBody MovieDto movieReqDto){
-		try {
 			String result = movieService.addMovie(movieReqDto);
 			return ResponseEntity.status(HttpStatus.CREATED).body(result);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
-		}
+		
 	}
 	
 	@GetMapping("/box-office/{movieId}")
 	public ResponseEntity<String> movieRevenue(@PathVariable Integer movieId){
-		try {
 			String result = movieService.movieRevenue(movieId);
 			return ResponseEntity.ok(result);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
 	}
 }

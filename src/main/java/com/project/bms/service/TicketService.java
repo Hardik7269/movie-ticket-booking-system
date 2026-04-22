@@ -14,17 +14,17 @@ import com.project.bms.Repository.ShowRepository;
 import com.project.bms.Repository.TheaterRepository;
 import com.project.bms.Repository.TicketRepository;
 import com.project.bms.Repository.UserRepository;
-import com.project.bms.dtos.TicketReciveDto;
+import com.project.bms.dtos.TicketReceiveDto;
 import com.project.bms.entity.Movie;
 import com.project.bms.entity.Show;
 import com.project.bms.entity.ShowSeat;
 import com.project.bms.entity.Theater;
 import com.project.bms.entity.Ticket;
 import com.project.bms.entity.User;
-import com.project.bms.exceptations.MovieNotFoundExceptation;
-import com.project.bms.exceptations.SeatNotAvailableExceptation;
-import com.project.bms.exceptations.ShowNotFoundExceptation;
-import com.project.bms.exceptations.TheaterNotFoundExceptation;
+import com.project.bms.exceptations.MovieNotFoundException;
+import com.project.bms.exceptations.SeatNotAvailableException;
+import com.project.bms.exceptations.ShowNotFoundException;
+import com.project.bms.exceptations.TheaterNotFoundException;
 import com.project.bms.exceptations.UserNotFoundException;
 
 @Service
@@ -47,29 +47,29 @@ public class TicketService {
     }
 
     @Transactional
-    public void bookTicket(TicketReciveDto ticketReciveDto) 
-            throws TheaterNotFoundExceptation,MovieNotFoundExceptation, ShowNotFoundExceptation, ShowNotFoundExceptation {
+    public void bookTicket(TicketReceiveDto ticketReciveDto) 
+            throws TheaterNotFoundException,MovieNotFoundException, ShowNotFoundException, ShowNotFoundException {
 
-        String username = ticketReciveDto.getUsername();
+        String username = ticketReciveDto.username();
 
         User user = userRepository.findByUname(username)
                 .orElseThrow(() -> new UserNotFoundException());
 
-        Theater theater = theaterRepository.findByName(ticketReciveDto.getTheaterName())
-                .orElseThrow(() -> new TheaterNotFoundExceptation());
+        Theater theater = theaterRepository.findByName(ticketReciveDto.theaterName())
+                .orElseThrow(() -> new TheaterNotFoundException());
 
-        Movie movie = movieRepository.findByMovieName(ticketReciveDto.getMovieName())
-                .orElseThrow(() -> new MovieNotFoundExceptation());
+        Movie movie = movieRepository.findByMovieName(ticketReciveDto.movieName())
+                .orElseThrow(() -> new MovieNotFoundException());
 
-        Time showTime = ticketReciveDto.getShowTime();
-        Date showDate = ticketReciveDto.getShowDate();
+        Time showTime = ticketReciveDto.showTime();
+        Date showDate = ticketReciveDto.showDate();
         Integer theaterId = theater.getId();
         Integer movieId = movie.getId();
 
         Show show = showRepository.findByTimeAndDateAndTheaterIdAndMovieId(showTime, showDate, theaterId, movieId)
-                .orElseThrow(() -> new ShowNotFoundExceptation());
+                .orElseThrow(() -> new ShowNotFoundException());
 
-        List<ShowSeat> selectedSeats = ticketReciveDto.getSelectSeats();
+        List<ShowSeat> selectedSeats = ticketReciveDto.selectSeats();
         List<ShowSeat> showSeats = show.getShowSeats();
 
         for (ShowSeat seat : selectedSeats) {
@@ -77,7 +77,7 @@ public class TicketService {
 			ShowSeat availableSeat = showSeats.stream()
                     .filter(predicate)
                     .findFirst()
-                    .orElseThrow(() -> new SeatNotAvailableExceptation());
+                    .orElseThrow(() -> new SeatNotAvailableException());
 
             availableSeat.setAvailable(false);
         }

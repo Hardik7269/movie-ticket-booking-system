@@ -7,14 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.project.bms.Repository.UserRepository;
 import com.project.bms.dtos.TicketDto;
-import com.project.bms.dtos.TicketReciveDto;
 import com.project.bms.dtos.TicketResponseDTO;
 import com.project.bms.dtos.UserDto;
 import com.project.bms.entity.User;
 import com.project.bms.entity.Weather;
-import com.project.bms.exceptations.NoTicketsAvailableExceptation;
-import com.project.bms.exceptations.UserAddtionFailedExceptation;
-import com.project.bms.exceptations.UserAlreadyExistsExceptation;
+import com.project.bms.exceptations.NoTicketsAvailableException;
+import com.project.bms.exceptations.UserAddtionFailedException;
+import com.project.bms.exceptations.UserAlreadyExistsException;
 import com.project.bms.exceptations.UserNotFoundException;
 import com.project.bms.transformDtoTo.TransformDto;
 
@@ -32,23 +31,23 @@ public class UserService {
     
 
 
-	public String addUser(UserDto userdto) throws UserAlreadyExistsExceptation, UserAddtionFailedExceptation{
+	public String addUser(UserDto userdto) throws UserAlreadyExistsException, UserAddtionFailedException{
         try {
             User newUser = transform.userDtoToUser(userdto);
             if(userRepository.findByEmail(newUser.getEmail())!= null){
-                throw new UserAlreadyExistsExceptation();
+                throw new UserAlreadyExistsException();
             }
             userRepository.save(newUser);
             return "User Added Sucessfully";
         } catch (Exception e) {
-            throw new UserAddtionFailedExceptation();
+            throw new UserAddtionFailedException();
         }
     }
 	
-	public TicketResponseDTO getAllTickets(long uId) throws UserNotFoundException , NoTicketsAvailableExceptation{
+	public TicketResponseDTO getAllTickets(long uId) throws UserNotFoundException , NoTicketsAvailableException{
 		User user = userRepository.findById(uId).orElseThrow( () -> new UserNotFoundException());
 		if(user.getTikcets().isEmpty()) {
-			throw new NoTicketsAvailableExceptation();
+			throw new NoTicketsAvailableException();
 		}
 		
 		 List<TicketDto> collect = user.getTikcets().stream().map(transform::ticketToTicketDto).collect(Collectors.toList());

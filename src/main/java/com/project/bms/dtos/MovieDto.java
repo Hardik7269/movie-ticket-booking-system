@@ -1,10 +1,11 @@
 package com.project.bms.dtos;
 
-import lombok.Data;
+import lombok.Builder;
 
-@Data
-public class MovieDto {
-	private String movieName;
-	private long duration;
-	private String languate;
+@Builder
+public record MovieDto(
+		String movieName, 
+		long duration, 
+		String languate) {
+
 }

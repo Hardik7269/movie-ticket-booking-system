@@ -23,8 +23,8 @@ public class TransformDto {
 
 	public User userDtoToUser(UserDto udto) {
 
-		return User.builder().uname(udto.getUserName()).age(udto.getAge()).email(udto.getEmail())
-				.gender(udto.getGender()).build();
+		return User.builder().uname(udto.userName()).age(udto.age()).email(udto.email())
+				.gender(udto.gender()).build();
 	}
 
 	public TicketDto ticketToTicketDto(Ticket t) {
@@ -42,8 +42,8 @@ public class TransformDto {
 	}
 	
 	public Show showDtoToShow(ShowDto showDto , Theater theater , Movie movie) {
-		return Show.builder().date(showDto.getShowDate())
-		.time(showDto.getShowTime())
+		return Show.builder().date(showDto.showDate())
+		.time(showDto.showTime())
 		.movie(movie)
 		.theater(theater)
 		.build();
@@ -58,10 +58,10 @@ public class TransformDto {
 	}
 	
 	public Movie movieDtoToMovie(MovieDto m) {
-		return Movie.builder().movieName(m.getMovieName())
+		return Movie.builder().movieName(m.movieName())
 			.moviereleaseDate(LocalDate.now())
-			.duration(m.getDuration())
-			.language(m.getLanguate())
+			.duration(m.duration())
+			.language(m.languate())
 			.build();
 	}
 }

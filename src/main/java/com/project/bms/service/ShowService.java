@@ -15,9 +15,9 @@ import com.project.bms.dtos.ShowDto;
 import com.project.bms.entity.Movie;
 import com.project.bms.entity.Show;
 import com.project.bms.entity.Theater;
-import com.project.bms.exceptations.MovieNotFoundExceptation;
-import com.project.bms.exceptations.ShowNotFoundExceptation;
-import com.project.bms.exceptations.TheaterNotFoundExceptation;
+import com.project.bms.exceptations.MovieNotFoundException;
+import com.project.bms.exceptations.ShowNotFoundException;
+import com.project.bms.exceptations.TheaterNotFoundException;
 import com.project.bms.transformDtoTo.TransformDto;
 
 import jakarta.transaction.Transactional;
@@ -41,14 +41,14 @@ public class ShowService {
 
 
 	@Transactional
-	public void addShow(ShowDto showDto) throws TheaterNotFoundExceptation,MovieNotFoundExceptation{
-		Optional<Theater> theaterOp = theaterRepository.findById(showDto.getTheaterId());
+	public void addShow(ShowDto showDto) throws TheaterNotFoundException,MovieNotFoundException{
+		Optional<Theater> theaterOp = theaterRepository.findById(showDto.theaterId());
 		if(theaterOp.isEmpty()) {
-			throw new TheaterNotFoundExceptation();
+			throw new TheaterNotFoundException();
 		}
-		Optional<Movie> movieOp = movieRepository.findById(showDto.getMovieId());
+		Optional<Movie> movieOp = movieRepository.findById(showDto.movieId());
 		if(movieOp.isEmpty()) {
-			throw new MovieNotFoundExceptation();
+			throw new MovieNotFoundException();
 		}
 		
 		Movie movie = movieOp.get();
@@ -64,7 +64,7 @@ public class ShowService {
 		theaterRepository.save(theater);
 	}
 
-	public List<ShowDto> getTodayShow() throws ShowNotFoundExceptation {
+	public List<ShowDto> getTodayShow() throws ShowNotFoundException {
 		LocalDate today = LocalDate.now();
 		Predicate<Show> predicate = show -> show.getDate().toLocalDate().equals(today);
 
@@ -72,7 +72,7 @@ public class ShowService {
 				.map(show -> transform.showToShowDto(show)).collect(Collectors.toList());
 
 		if (todayShows.isEmpty()) {
-			throw new ShowNotFoundExceptation();
+			throw new ShowNotFoundException();
 		}
 
 		return todayShows;

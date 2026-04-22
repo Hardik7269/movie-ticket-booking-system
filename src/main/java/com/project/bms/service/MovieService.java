@@ -13,7 +13,7 @@ import com.project.bms.dtos.MovieDto;
 import com.project.bms.entity.Movie;
 import com.project.bms.entity.Show;
 import com.project.bms.entity.ShowSeat;
-import com.project.bms.exceptations.MovieNotFoundExceptation;
+import com.project.bms.exceptations.MovieNotFoundException;
 import com.project.bms.transformDtoTo.TransformDto;
 
 @Service
@@ -34,10 +34,10 @@ public class MovieService {
 		return "Movie Successfully Added !!";
 	}
 	
-	public String movieRevenue(Integer id) throws MovieNotFoundExceptation {
+	public String movieRevenue(Integer id) throws MovieNotFoundException {
 		Optional<Movie> movieOpt = movieRepository.findById(id);
 		if(movieOpt.isEmpty()) {
-			throw new MovieNotFoundExceptation();
+			throw new MovieNotFoundException();
 		}
 		Movie movie = movieOpt.get();
 		Integer revenue = 0;
